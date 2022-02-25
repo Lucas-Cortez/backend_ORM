@@ -17,8 +17,22 @@ class Services {
     return database[this.modelName].create();
   }
 
-  async update(data, id) {
-    return database[this.modelName].update();
+  async update(data, id, transaction = {}) {
+    return database[this.modelName].update(data, {
+      where: {
+        id: id,
+      },
+      transaction,
+    });
+  }
+
+  async updateMany(data, where, transaction = {}) {
+    return database[this.modelName].update(data, {
+      where: {
+        ...where,
+      },
+      transaction,
+    });
   }
 
   async delete(id) {

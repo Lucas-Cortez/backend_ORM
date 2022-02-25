@@ -1,7 +1,6 @@
-// const express = require("express");
 console.clear();
 const routes = require("./routes");
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 const app = routes();
 

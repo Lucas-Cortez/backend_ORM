@@ -3,9 +3,12 @@ const NivelController = require("../controllers/NivelController");
 
 const router = Router();
 router
-  .get("/niveis", NivelController.listAllLevels)
-  .get("/niveis/:id", NivelController.listLevel)
-  .post("/niveis", NivelController.createLevel)
-  .put("/niveis/:id", NivelController.updateLevel)
-  .delete("/niveis/:id", NivelController.deleteLevel);
+  .get("/", NivelController.listAllLevels)
+  .get("/:id", NivelController.listLevel)
+
+  .post("/", NivelController.createLevel)
+
+  .put("/:id", NivelController.updateLevel)
+
+  .delete("/:id", NivelController.deleteLevel);
 module.exports = router;

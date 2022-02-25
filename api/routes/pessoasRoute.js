@@ -3,23 +3,23 @@ const PessoaController = require("../controllers/PessoaController");
 
 const router = Router();
 
-router.get("/pessoas", PessoaController.listAllActivePeople);
-router.get("/pessoas/all", PessoaController.listAllPeople);
-router.get("/pessoas/matricula/:classId/confirmadas", PessoaController.getRegistrationPerClass);
-router.get("/pessoas/matricula/lotada", PessoaController.getFullClass);
-router.get("/pessoas/:id", PessoaController.listPerson);
-router.post("/pessoas", PessoaController.createPerson);
-router.post("/pessoas/:studentId/cancela", PessoaController.cancelPerson);
-router.put("/pessoas/:id", PessoaController.updatePerson);
-router.delete("/pessoas/:id", PessoaController.deletePerson);
+router.get("/", PessoaController.listAllPeople);
+router.get("/ativas", PessoaController.listAllActivePeople);
+router.get("/matricula/:classId/confirmadas", PessoaController.getRegistrationPerClass);
+router.get("/matricula/lotada", PessoaController.getFullClass);
+router.get("/:studentId/matricula", PessoaController.getRegistration);
+router.get("/:id", PessoaController.listPerson);
+router.get("/:studentId/matricula/:registrationId", PessoaController.listRegistration);
 
-router.get("/pessoas/:studentId/matricula/:registrationId", PessoaController.listRegistration);
-router.post("/pessoas/:studentId/matricula", PessoaController.createRegistration);
-router.put("/pessoas/:studentId/matricula/:registrationId", PessoaController.updateRegistration);
-router.delete("/pessoas/:studentId/matricula/:registrationId", PessoaController.deleteRegistration);
+router.post("/", PessoaController.createPerson);
+router.post("/:studentId/matricula", PessoaController.createRegistration);
+router.post("/:id/restore", PessoaController.restorePerson);
+router.post("/:studentId/cancela", PessoaController.cancelPerson);
 
-router.post("/pessoas/:id/restore", PessoaController.restorePerson);
+router.put("/:id", PessoaController.updatePerson);
+router.put("/:studentId/matricula/:registrationId", PessoaController.updateRegistration);
 
-router.get("/pessoas/:studentId/matricula", PessoaController.getRegistration);
+router.delete("/:id", PessoaController.deletePerson);
+router.delete("/:studentId/matricula/:registrationId", PessoaController.deleteRegistration);
 
 module.exports = router;

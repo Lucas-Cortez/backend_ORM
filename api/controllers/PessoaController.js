@@ -7,7 +7,7 @@ const peopleServices = new PeopleServices();
 class PessoaController {
   static async listAllActivePeople(req, res) {
     try {
-      const activePeople = await peopleServices.getAll();
+      const activePeople = await peopleServices.getActive();
       return res.status(200).json(activePeople);
     } catch (error) {
       return res.status(500).json(error.message);
@@ -16,7 +16,7 @@ class PessoaController {
 
   static async listAllPeople(req, res) {
     try {
-      const allPeople = await database.Pessoas.scope("all").findAll();
+      const allPeople = await peopleServices.getAllRecords();
       return res.status(200).json(allPeople);
     } catch (error) {
       return res.status(500).json(error.message);
@@ -228,27 +228,7 @@ class PessoaController {
     const { studentId } = req.params;
 
     try {
-      database.sequelize.transaction(async (t) => {
-        await database.Pessoas.update(
-          { ativo: false },
-          {
-            where: {
-              id: parseInt(studentId),
-            },
-          },
-          { transaction: t }
-        );
-
-        await database.matriculas.update(
-          { status: "cancelado" },
-          {
-            where: {
-              estudante_id: parseInt(studentId),
-            },
-          },
-          { transaction: t }
-        );
-      });
+      peopleServices.cancelPersonRegistration(studentId);
 
       return res.status(200).json({ message: `matricula do estudante ${studentId} cancelada` });
     } catch (error) {
