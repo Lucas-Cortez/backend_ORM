@@ -1,17 +1,15 @@
-const { Op } = require("sequelize");
-const database = require("../models");
+// const { Op } = require("sequelize");
+// const database = require("../models");
+
+const { ClassServices } = require("../services");
+const classServices = new ClassServices("Turmas");
 
 class TurmaController {
   static async listAllClasses(req, res) {
-    const { data_inicial, data_final } = req.query;
-    const where = {};
-
-    data_inicial || data_final ? (where.data_inicio = {}) : null;
-    data_inicial ? (where.data_inicio[Op.gte] = data_inicial) : null;
-    data_final ? (where.data_inicio[Op.lte] = data_final) : null;
+    const dates = req.query;
 
     try {
-      const todasAsTurmas = await database.Turmas.findAll({ where });
+      const todasAsTurmas = await classServices.getClassWithDate(dates);
       return res.status(200).json(todasAsTurmas);
     } catch (error) {
       return res.status(500).json(error.message);
@@ -20,12 +18,9 @@ class TurmaController {
 
   static async listClass(req, res) {
     const { id } = req.params;
+
     try {
-      const umaTurma = await database.Turmas.findOne({
-        where: {
-          id: Number(id),
-        },
-      });
+      const umaTurma = await classServices.getOne(parseInt(id));
       return res.status(200).json(umaTurma);
     } catch (error) {
       return res.status(500).json(error.message);
@@ -35,7 +30,7 @@ class TurmaController {
   static async createClass(req, res) {
     const novaTurma = req.body;
     try {
-      const novaTurmaCriada = await database.Turmas.create(novaTurma);
+      const novaTurmaCriada = await classServices.create(novaTurma);
       return res.status(200).json(novaTurmaCriada);
     } catch (error) {
       return res.status(500).json(error.message);
@@ -46,8 +41,8 @@ class TurmaController {
     const { id } = req.params;
     const novasInfos = req.body;
     try {
-      await database.Turmas.update(novasInfos, { where: { id: Number(id) } });
-      const turmaAtualizada = await database.Turmas.findOne({ where: { id: Number(id) } });
+      await classServices.update(novasInfos, parseInt(id));
+      const turmaAtualizada = await classServices.getOne(parseInt(id));
       return res.status(200).json(turmaAtualizada);
     } catch (error) {
       return res.status(500).json(error.message);
@@ -57,7 +52,7 @@ class TurmaController {
   static async deleteClass(req, res) {
     const { id } = req.params;
     try {
-      await database.Turmas.destroy({ where: { id: Number(id) } });
+      await classServices.delete(parseInt(id));
       return res.status(200).json({ mensagem: `id ${id} deletado` });
     } catch (error) {
       return res.status(500).json(error.message);

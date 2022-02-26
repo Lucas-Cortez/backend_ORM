@@ -39,10 +39,10 @@ class PessoaController {
   }
 
   static async listPerson(req, res) {
-    const id = parseInt(req.params.id);
+    const { id } = req.params;
 
     try {
-      const person = await database.Pessoas.findOne({ where: { id: id } });
+      const person = await peopleServices.getOne(parseInt(id));
       return res.status(200).json(person);
     } catch (error) {
       return res.status(500).json(error.message);
@@ -53,7 +53,7 @@ class PessoaController {
     const newPerson = req.body;
 
     try {
-      const newPersonCreated = await database.Pessoas.create(newPerson);
+      const newPersonCreated = await peopleServices.create(newPerson);
       return res.status(200).json(newPersonCreated);
     } catch (error) {
       return res.status(500).json(error.message);
@@ -61,14 +61,14 @@ class PessoaController {
   }
 
   static async updatePerson(req, res) {
-    const id = parseInt(req.params.id);
+    const { id } = req.params;
     const newUpdate = req.body;
 
     try {
-      const [updateIsDone] = await database.Pessoas.update(newUpdate, { where: { id: id } });
+      const [updateIsDone] = await peopleServices.update(newUpdate, parseInt(id));
 
       if (!!updateIsDone) {
-        const personUpdated = await database.Pessoas.findOne({ where: { id: id } });
+        const personUpdated = await peopleServices.getOne(parseInt(id));
         return res.status(200).json(personUpdated);
       } else {
         throw Error("Update did not done");
@@ -82,7 +82,7 @@ class PessoaController {
     const id = parseInt(req.params.id);
 
     try {
-      const deleteIsDone = await database.Pessoas.destroy({ where: { id: id } });
+      const deleteIsDone = await peopleServices.delete(parseInt(id));
 
       if (!!deleteIsDone) {
         return res.status(200).json({ message: "Delete done" });
@@ -228,8 +228,7 @@ class PessoaController {
     const { studentId } = req.params;
 
     try {
-      peopleServices.cancelPersonRegistration(studentId);
-
+      await peopleServices.cancelPersonRegistration(studentId);
       return res.status(200).json({ message: `matricula do estudante ${studentId} cancelada` });
     } catch (error) {
       return res.status(500).json(error.message);
