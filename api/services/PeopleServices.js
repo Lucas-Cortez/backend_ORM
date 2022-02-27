@@ -28,4 +28,4 @@ class PeopleServices extends Services {
     });
   }
 }
-module.exports = PeopleServices;
+module.exports = { PeopleServices };

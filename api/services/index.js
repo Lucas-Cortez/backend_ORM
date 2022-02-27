@@ -1,6 +1,6 @@
-const PeopleServices = require("./PessoasServices");
-const LevelServices = require("./NiveisServices");
-const ClassServices = require("./TurmasServices");
-const RegistrationServices = require("./MatriculasServices");
+const { PeopleServices } = require("./PeopleServices");
+const { LevelServices } = require("./LevelServices");
+const { ClassServices } = require("./ClassServices");
+const { RegistrationServices } = require("./RegistrationServices");
 
 module.exports = { PeopleServices, LevelServices, ClassServices, RegistrationServices };

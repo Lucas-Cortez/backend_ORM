@@ -9,8 +9,8 @@ class Services {
     return database[this.modelName].findAll({ where: { ...where } });
   }
 
-  async getOne(id) {
-    return database[this.modelName].findOne({ where: { id: id } });
+  async getOne(where = {}) {
+    return database[this.modelName].findOne({ where: { ...where } });
   }
 
   async create(data) {
@@ -41,8 +41,23 @@ class Services {
     );
   }
 
+  async restore(where) {
+    return database[this.modelName].restore({ where: { ...where } });
+  }
+
   async delete(id) {
     return database[this.modelName].destroy({ where: { id: id } });
+  }
+
+  async deleteMany(where = {}) {
+    return database[this.modelName].destroy({ where: { ...where } });
+  }
+
+  async findAndCount(where, params = {}) {
+    return database[this.modelName].findAndCountAll({
+      ...params,
+      where: { ...where },
+    });
   }
 }
 

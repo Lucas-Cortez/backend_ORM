@@ -1,5 +1,4 @@
 const Services = require("./Services");
-// const database = require("../models");
 const { Op } = require("sequelize");
 
 class ClassServices extends Services {
@@ -21,4 +20,4 @@ class ClassServices extends Services {
     return super.getAll(where);
   }
 }
-module.exports = ClassServices;
+module.exports = { ClassServices };

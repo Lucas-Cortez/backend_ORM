@@ -5,4 +5,4 @@ class LevelServices extends Services {
     super("Niveis");
   }
 }
-module.exports = LevelServices;
+module.exports = { LevelServices };
